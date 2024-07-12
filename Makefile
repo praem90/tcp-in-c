@@ -13,6 +13,7 @@ listener: listener.o
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 build: server listener
+	rm *.o
 
 clean:
 	rm -r build/*

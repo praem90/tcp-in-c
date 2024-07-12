@@ -30,7 +30,7 @@ int main() {
 
     remote.sin_family = AF_INET;
     remote.sin_addr.s_addr = inet_addr("127.0.0.1");
-    remote.sin_port = 9899;
+    remote.sin_port = htons(9899);
 
     printf("Preparing to bind the socket to address \n");
     if(bind(isocket, (SA*) &remote, sizeof(remote)) < 0) {

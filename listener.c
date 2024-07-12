@@ -32,34 +32,27 @@ int main() {
     remote.sin_addr.s_addr = inet_addr("127.0.0.1");
     remote.sin_port = 9899;
 
-    printf("Preparing to bind the socket to address \n");
-    if(bind(isocket, (SA*) &remote, sizeof(remote)) < 0) {
-        printf("Could not bound to socket");
-        return 1;
-    }
-    printf("Bounded to the ip");
+    /* printf("Preparing to bind the socket to address \n"); */
+    /* if(bind(isocket, (SA*) &remote, sizeof(remote)) < 0) { */
+    /*     printf("Could not bound to socket"); */
+    /*     return 1; */
+    /* } */
+    /* printf("Bounded to the ip"); */
 
-    if (listen(isocket, 5) != 0) {
-        printf("Unable to listen to the socket");
-        return 1;
-    }
-
-    printf("Listening for clients");
+    printf("Connecting to the server");
 
     socklen_t len = sizeof(client);
-    int csocket = accept(isocket, (SA*) &client, &len);
+    int csocket = connect(isocket, (SA*) &client, len);
     if (csocket!= 0) {
         printf("Unable to accept a client");
         return 1;
     }
 
-    char client_ip[INET_ADDRSTRLEN];
+    char buff[80];
 
-    inet_ntop(AF_INET, &client.sin_addr.s_addr, client_ip, len);
+    gets(buff);
 
-    printf("Connected to a client %s", client_ip);
-
-    read_msg(csocket);
+    send(isocket, buff, sizeof(buff), MSG_OOB);
 }
 
 
