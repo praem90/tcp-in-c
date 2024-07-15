@@ -14,7 +14,7 @@ void read_msg(int client) {
 
     recv(client, buff, sizeof(buff), 0);
 
-    printf("Client says %s", buff);
+    printf("Client says %s \n", buff);
 }
 
 int main() {
@@ -37,19 +37,19 @@ int main() {
         printf("Could not bound to socket");
         return 1;
     }
-    printf("Bounded to the ip");
+    printf("Bounded to the ip\n");
 
     if (listen(isocket, 5) != 0) {
         printf("Unable to listen to the socket");
         return 1;
     }
 
-    printf("Listening for clients");
+    printf("Listening for clients\n");
 
     socklen_t len = sizeof(client);
     int csocket = accept(isocket, (SA*) &client, &len);
-    if (csocket!= 0) {
-        printf("Unable to accept a client");
+    if (csocket <= 0) {
+        printf("Unable to accept a client %d", csocket);
         return 1;
     }
 
@@ -57,9 +57,15 @@ int main() {
 
     inet_ntop(AF_INET, &client.sin_addr.s_addr, client_ip, len);
 
-    printf("Connected to a client %s", client_ip);
+    printf("Connected to a client %s\n", client_ip);
 
-    read_msg(csocket);
+    char buff[80] ;
+    while(1) {
+        read_msg(csocket);
+        printf("Enter your message:");
+        gets(buff);
+        send(csocket, &buff, sizeof(buff), MSG_EOF);
+    }
 }
 
 

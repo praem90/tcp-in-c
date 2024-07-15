@@ -30,7 +30,7 @@ int main() {
 
     remote.sin_family = AF_INET;
     remote.sin_addr.s_addr = inet_addr("127.0.0.1");
-    remote.sin_port = 9899;
+    remote.sin_port = htons(9899);
 
     /* printf("Preparing to bind the socket to address \n"); */
     /* if(bind(isocket, (SA*) &remote, sizeof(remote)) < 0) { */
@@ -39,10 +39,10 @@ int main() {
     /* } */
     /* printf("Bounded to the ip"); */
 
-    printf("Connecting to the server");
+    printf("Connecting to the server \n");
 
-    socklen_t len = sizeof(client);
-    int csocket = connect(isocket, (SA*) &client, len);
+    socklen_t len = sizeof(remote);
+    int csocket = connect(isocket, (SA*) &remote, len);
     if (csocket!= 0) {
         printf("Unable to accept a client");
         return 1;
@@ -50,9 +50,17 @@ int main() {
 
     char buff[80];
 
-    gets(buff);
+    while(1) {
+        printf("Enter your message:");
+        gets(buff);
 
-    send(isocket, buff, sizeof(buff), MSG_OOB);
+        send(isocket, buff, sizeof(buff), MSG_OOB);
+
+        buff[0] = '\0';
+
+        recv(isocket, &buff, sizeof(buff), MSG_EOF);
+        printf("Server says: %s \n", buff);
+    }
 }
 
 
