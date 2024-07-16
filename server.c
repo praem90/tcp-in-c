@@ -63,8 +63,8 @@ int main() {
     while(1) {
         read_msg(csocket);
         printf("Enter your message:");
-        gets(buff);
-        send(csocket, &buff, sizeof(buff), MSG_EOF);
+        fgets(buff, 80, stdin);
+        send(csocket, &buff, sizeof(buff), MSG_EOR);
     }
 }
 

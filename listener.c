@@ -52,13 +52,13 @@ int main() {
 
     while(1) {
         printf("Enter your message:");
-        gets(buff);
+        fgets(buff, 80, stdin);
 
         send(isocket, buff, sizeof(buff), MSG_OOB);
 
         buff[0] = '\0';
 
-        recv(isocket, &buff, sizeof(buff), MSG_EOF);
+        recv(isocket, &buff, sizeof(buff), MSG_EOR);
         printf("Server says: %s \n", buff);
     }
 }
